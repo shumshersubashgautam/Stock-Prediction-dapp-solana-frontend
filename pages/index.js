@@ -82,10 +82,10 @@ const Home = () => {
   const [priceKey, setPriceKey] = useState(STOCKDATA[0].priceKey);
   const [availableStock, setAvailableStock] = useState([]);
 
-  // Static
-  const staticCreatebet = () => {
-    console.log("Creating bet")
-  }
+ 
+
+ const { allBets, createBet } = useGlobalState()
+ //console.log(allbets)
 
   return (
     <div className={styles.wrapper}>
@@ -215,13 +215,13 @@ const Home = () => {
                 }${" bg-[#ef4b09] w-1/4 text-center mt-8 self-center"}`}
               onClick={(e) => {
                 e.preventDefault()
-                // createBet(
-                //   new BN(Number(sol) * LAMPORTS_PER_SOL), // bet amount in lamports(10^-9 SOL)
-                //   Number(guess), // prediction price
-                //   Number(time), // duration in seconds
-                //   new PublicKey(priceKey) // pythPriceKey
-                // )
-                staticCreatebet()
+                createBet(
+                  new BN(Number(sol) * LAMPORTS_PER_SOL), // bet amount in lamports(10^-9 SOL)
+                  Number(guess), // prediction price
+                  Number(time), // duration in seconds
+                  new PublicKey(priceKey) // pythPriceKey
+                )
+                
               }
               }
             />

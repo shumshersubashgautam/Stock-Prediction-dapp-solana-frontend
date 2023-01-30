@@ -26,14 +26,32 @@ const AvailableBets = ({
 
 
   // Static
-  const allBets = []
+  // const allBets = []
+  const {allBets,closeBet,claimBet} = useGlobalState()
 
-  const staticCloseBet = () => {
-    console.log("Closing bet")
+  // const staticCloseBet = () => {
+  //   console.log("Closing bet")
+  // }
+  // const staticClaimBet = () => {
+  //   console.log("Claiming bet")
+  // }
+  let thing = "DpDPFkDH3NTXaRbkHiRX5nWcYg4SRRD8qydnEf9XiraD"
+  let array = STOCKDATA.filter((stock) => {
+    return stock.priceKey == thing
+  })
+  console.log(array)
+
+  const getStockName = (key) => {
+    let name = ""
+    // Check if pythPriceKey is equal to a price key in the data and if so get the NAME 
+    STOCKDATA.forEach((stock) => {
+      if (stock.priceKey == key) {
+        name = stock.name
+      }
+    })
+    return name
   }
-  const staticClaimBet = () => {
-    console.log("Claiming bet")
-  }
+
 
   return (
     <div className={styles.availableBetsContainer}>
@@ -45,7 +63,7 @@ const AvailableBets = ({
             className={styles.availableBetsItem}
           >
             <p className={styles.stockName}>
-              AMC
+              {getStockName(bet.pythPriceKey.toString())}
             </p>
             <div className={styles.currentStockPrice}>
               <p className={styles.currentStockPriceTitle}>
@@ -54,9 +72,28 @@ const AvailableBets = ({
               <p className={styles.currentStockPriceAmount}>{getSolAmount(bet.amount)} SOL</p>
             </div>
             {console.log(Object.keys(bet.state)[0].toUpperCase())}
+            {Object.keys(bet.state)[0].toUpperCase() == "STARTED" ?
+              <div className={styles.button} onClick={() => claimBet(bet)}>
+                CLAIM
+              </div>
+              : Object.keys(bet.state)[0].toUpperCase() == "PLAYERAWON" ?
 
+                <div className={styles.availableBetsTitle}>
+                  PLAYER A WON
+                </div>
+                : Object.keys(bet.state)[0].toUpperCase() == "PLAYERBWON" ?
+                  <div className={styles.availableBetsTitle}>
+                    PLAYER A WON
+                  </div>
+                  : <div className={styles.button}
+                    onClick={() => {
+                      setSelectedBet(bet);
+                      setShowModal(true);
+                    }}>
+                    ENTER
+                  </div>}
             <IoMdClose className="hover:text-[#ffffff] text-2xl mr-4"
-              onClick={() => staticCloseBet(bet)}
+              onClick={() => closeBet(bet)}
             />
           </div>
         );
